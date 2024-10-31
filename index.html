@@ -11,6 +11,14 @@
     <canvas id="gameCanvas"></canvas>
     <h1>Snake Mania</h1>
     <p>Score: <span id="score">0</span></p>
+    <p>High Score: <span id="highScore">0</span></p>
+    
+    <div class="difficulty">
+      <button onclick="setDifficulty('easy')">Easy</button>
+      <button onclick="setDifficulty('medium')">Medium</button>
+      <button onclick="setDifficulty('hard')">Hard</button>
+    </div>
+    
     <button id="restartButton" onclick="restartGame()">Restart</button>
   </div>
   <script src="script.js"></script>

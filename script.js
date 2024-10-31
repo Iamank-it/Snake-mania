@@ -1,6 +1,11 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const scoreDisplay = document.getElementById("score");
+const highScoreDisplay = document.getElementById("highScore");
+
+// Load audio files
+const eatSound = new Audio("eat.mp3");
+const gameOverSound = new Audio("gameover.mp3");
 
 // Responsive canvas size
 canvas.width = 400;
@@ -15,11 +20,30 @@ let snakeX, snakeY, xVelocity, yVelocity, snakeParts, tailLength;
 // Apple variables
 let appleX, appleY;
 
-// Score variable
+// Score and high score variables
 let score;
+let highScore = localStorage.getItem("highScore") || 0; // Load high score from local storage
+highScoreDisplay.textContent = highScore;
 
 // Game loop control
 let gameInterval;
+let gameSpeed = 100; // Default speed (medium)
+
+// Difficulty setting function
+function setDifficulty(level) {
+  switch (level) {
+    case "easy":
+      gameSpeed = 150;
+      break;
+    case "medium":
+      gameSpeed = 100;
+      break;
+    case "hard":
+      gameSpeed = 50;
+      break;
+  }
+  restartGame(); // Restart game at selected speed
+}
 
 function initializeGame() {
   snakeX = 10;
@@ -36,7 +60,7 @@ function initializeGame() {
   scoreDisplay.textContent = score;
 
   // Start the game loop
-  gameInterval = setInterval(drawGame, 100);
+  gameInterval = setInterval(drawGame, gameSpeed);
 }
 
 function drawGame() {
@@ -54,6 +78,14 @@ function drawGame() {
     tailLength++;
     score++;
     scoreDisplay.textContent = score;
+    eatSound.play(); // Play sound when apple is eaten
+
+    // Update high score if the current score is greater
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem("highScore", highScore); // Save high score to local storage
+      highScoreDisplay.textContent = highScore;
+    }
   }
 }
 
@@ -112,6 +144,7 @@ function checkGameOver() {
     ctx.font = "50px Verdana";
     ctx.fillText("Game Over!", canvas.width / 6.5, canvas.height / 2);
     clearInterval(gameInterval); // Stop the game loop
+    gameOverSound.play(); // Play game-over sound
   }
 
   return gameOver;

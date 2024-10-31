@@ -58,3 +58,12 @@ button {
 button:hover {
   background-color: #FF7043;
 }
+
+.difficulty button {
+  margin: 5px;
+  background-color: #3F51B5;
+}
+
+.difficulty button:hover {
+  background-color: #5C6BC0;
+}
